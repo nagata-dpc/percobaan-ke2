@@ -88,100 +88,99 @@
     </div>
 
     <script>
+        // Nilai awal data sensor
         let currentHR = 75;
         let currentTemp = 36.5;
+        let txtStatus = "SEHAT 💖";
+        let warnaStatus = "#10b981";
         let savedData = [];
         let initialClear = true;
 
-        // Fungsi pembantu untuk mendeteksi status berdasarkan angka sensor
-        function hitungStatus(hr, temp) {
-            // 1. Kritis
-            if (hr > 115 || hr < 50 || temp > 38.0 || temp < 35.0) {
-                return { text: "KRITIS 🚨", color: "#ef4444", bgColor: "#fee2e2" };
-            }
-            // 2. Kurang Sehat
-            if ((hr > 95 && hr <= 115) || (hr >= 50 && hr < 60) || (temp > 37.2 && temp <= 38.0) || (temp >= 35.0 && temp < 36.1)) {
-                return { text: "KRG SEHAT ⚠️", color: "#f59e0b", bgColor: "#fef3c7" };
-            }
-            // 3. Sehat / Normal
-            return { text: "SEHAT 💖", color: "#10b981", bgColor: "#fff1f2" };
-        }
+        // Kumpulan data bohongan (Sehat, Kurang Sehat, Kritis) untuk digilir otomatis
+        const daftarDataSimulasi = [
+            { hr: 72, temp: 36.4, status: "SEHAT 💖", warna: "#10b981", bg: "#fff1f2" },
+            { hr: 98, temp: 37.4, status: "KRG SEHAT ⚠️", warna: "#f59e0b", bg: "#fef3c7" },
+            { hr: 80, temp: 36.6, status: "SEHAT 💖", warna: "#10b981", bg: "#fff1f2" },
+            { hr: 120, temp: 38.5, status: "KRITIS 🚨", warna: "#ef4444", bg: "#fee2e2" },
+            { hr: 68, temp: 36.1, status: "SEHAT 💖", warna: "#10b981", bg: "#fff1f2" },
+            { hr: 55, temp: 35.8, status: "KRG SEHAT ⚠️", warna: "#f59e0b", bg: "#fef3c7" }
+        ];
+        
+        let indeksSimulasi = 0;
 
-        // Fungsi mengubah angka secara acak (Simulasi bervariasi)
-        function perbaruiAngkaSensor() {
-            const acak = Math.random();
+        // Fungsi menggilir data simulasi secara teratur tanpa rumus matematika yang rumit
+        function gantiDataOtomatis() {
+            const dataSekarang = daftarDataSimulasi[indeksSimulasi];
             
-            if (acak > 0.70) { 
-                // 30% peluang memunculkan kondisi Kurang Sehat
-                currentHR = Math.floor(Math.random() * (112 - 98 + 1)) + 98;
-                currentTemp = parseFloat((Math.random() * (37.9 - 37.3) + 37.3).toFixed(1));
-            } else if (acak > 0.55) {
-                // 15% peluang memunculkan kondisi Kritis
-                currentHR = Math.floor(Math.random() * (130 - 116 + 1)) + 116;
-                currentTemp = parseFloat((Math.random() * (39.5 - 38.1) + 38.1).toFixed(1));
-            } else {
-                // 55% peluang memunculkan kondisi Sehat / Normal
-                currentHR = Math.floor(Math.random() * (95 - 65 + 1)) + 65;
-                currentTemp = parseFloat((Math.random() * (37.1 - 36.2) + 36.2).toFixed(1));
-            }
+            // Simpan nilai ke variabel global
+            currentHR = dataSekarang.hr;
+            currentTemp = dataSekarang.temp;
+            txtStatus = dataSekarang.status;
+            warnaStatus = dataSekarang.warna;
 
-            // Pasang ke komponen teks
+            // Cetak nilai angka ke layar monitor
             document.getElementById('val-hr').innerText = currentHR + " bpm";
             document.getElementById('val-temp').innerText = currentTemp + " °C";
 
-            // Ubah badge status dan background kotak sensor secara dinamis
-            const analisis = hitungStatus(currentHR, currentTemp);
+            // Perbarui visual warna kotak dan label status
             const badge = document.getElementById('badge-hr');
+            badge.innerText = txtStatus;
+            badge.style.backgroundColor = warnaStatus;
             
-            badge.innerText = analisis.text;
-            badge.style.backgroundColor = analisis.color;
-            
-            document.getElementById('box-hr').style.backgroundColor = analisis.bgColor;
-            document.getElementById('box-temp').style.backgroundColor = analisis.bgColor;
+            document.getElementById('box-hr').style.backgroundColor = dataSekarang.bg;
+            document.getElementById('box-temp').style.backgroundColor = dataSekarang.bg;
+
+            // Lanjut ke indeks data simulasi berikutnya
+            indeksSimulasi = (indeksSimulasi + 1) % daftarDataSimulasi.length;
         }
 
-        // Tombol Simpan Data ke dalam tabel log
+        // Tombol Save Data
         document.getElementById('btn-save').addEventListener('click', function() {
             const namaInput = document.getElementById('input-nama').value.trim() || "Pasien Anonim";
-            const analisis = hitungStatus(currentHR, currentTemp);
 
-            // Ambil waktu jam dan menit real-time asli dari komputer/HP user saat ini
-            const sekarang = new Date();
-            const jam = String(sekarang.getHours()).padStart(2, '0');
-            const menit = String(sekarang.getMinutes()).padStart(2, '0');
-            const waktuSekarang = jam + ":" + menit;
+            // Ambil Jam dan Menit Asli secara real-time dari sistem komputer/HP
+            const waktuSistem = new Date();
+            const jam = String(waktuSistem.getHours()).padStart(2, '0');
+            const menit = String(waktuSistem.getMinutes()).padStart(2, '0');
+            const formatWaktu = jam + ":" + menit;
 
             if (initialClear) {
                 document.getElementById('table-body').innerHTML = '';
                 initialClear = false;
             }
 
-            // Masukkan data ke array untuk file download
+            // Simpan data untuk log pengunduhan CSV
             savedData.push({ 
-                waktu: waktuSekarang, 
+                waktu: formatWaktu, 
                 nama: namaInput, 
                 hr: currentHR, 
                 temp: currentTemp, 
-                status: analisis.text 
+                status: txtStatus 
             });
 
-            // Tambahkan baris baru ke tabel fisik
-            const baris = document.createElement('tr');
-            baris.innerHTML = `
-                <td style="border-right: 1px solid #f3f4f6; font-family: monospace; color: #6b7280;">${waktuSekarang}</td>
+            // Buat baris baru di tabel fisik halaman web dengan jam asli angka
+            const barisBaru = document.createElement('tr');
+            barisBaru.innerHTML = `
+                <td style="border-right: 1px solid #f3f4f6; font-family: monospace; color: #6b7280;">${formatWaktu}</td>
                 <td style="border-right: 1px solid #f3f4f6; font-weight: bold;">${namaInput}</td>
                 <td style="border-right: 1px solid #f3f4f6; font-family: monospace;">${currentHR} bpm</td>
                 <td style="border-right: 1px solid #f3f4f6; font-family: monospace;">${currentTemp} °C</td>
-                <td style="font-weight: bold; color: ${analisis.color};">${analisis.text}</td>
+                <td style="font-weight: bold; color: ${warnaStatus};">${txtStatus}</td>
             `;
-            document.getElementById('table-body').appendChild(baris);
+            document.getElementById('table-body').appendChild(barisBaru);
         });
 
         // Tombol Download CSV
         document.getElementById('btn-download').addEventListener('click', function() {
             if (savedData.length === 0) {
-                alert("Data kosong! Silakan simpan data terlebih dahulu.");
+                alert("Belum ada data yang disimpan di tabel!");
                 return;
             }
-            let csv = "Waktu,Nama Pasien,Heart Rate,Suhu Tubuh,Status\n";
-            savedData.forEach(function(d) {
+            let isiCsv = "Waktu Pengecekan,Nama Pasien,Heart Rate,Suhu Tubuh,Status\n";
+            savedData.forEach(function(item) {
+                isiCsv += item.waktu + "," + item.nama + "," + item.hr + " bpm," + item.temp + " C," + item.status + "\n";
+            });
+            const linkDownload = document.createElement("a");
+            linkDownload.setAttribute("href", encodeURI("data:text/csv;charset=utf-8," + isiCsv));
+            linkDownload.setAttribute("download", "Laporan_Kesehatan_Dashboard.csv");
+            document.body.appendChild(linkDownload);
