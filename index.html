@@ -19,9 +19,9 @@
         .grid-form { display: grid; grid-template-columns: 90px 1fr auto; gap: 15px; align-items: center; margin-bottom: 25px; }
         label { font-weight: bold; color: var(--pink-dark); font-size: 14px; }
         input[type="text"] { padding: 10px; border: 2px solid var(--pink-light); border-radius: 10px; outline: none; }
-        .sensor-container { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background-color: #fff1f2; border: 2px solid var(--pink-light); border-radius: 12px; }
+        .sensor-container { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background-color: #fff1f2; border: 2px solid var(--pink-light); border-radius: 12px; transition: background-color 0.3s; }
         .sensor-value { font-weight: bold; font-family: monospace; color: var(--pink-dark); font-size: 16px; }
-        .status-badge { padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; color: white; background-color: #10b981; text-align: center; }
+        .status-badge { padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; color: white; background-color: #10b981; text-align: center; min-width: 110px; }
         .btn { background-color: var(--pink-primary); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
         .btn:hover { background-color: var(--pink-dark); }
         .btn-bluetooth { background-color: #6366f1; }
@@ -45,14 +45,14 @@
             <button id="btn-bluetooth" class="btn btn-bluetooth">Connect Bluetooth</button>
 
             <label>Heart Rate</label>
-            <div class="sensor-container">
+            <div id="box-hr" class="sensor-container">
                 <span id="val-hr" class="sensor-value">75 bpm</span>
                 <span style="color: var(--pink-primary);">♥</span>
             </div>
             <span id="badge-hr" class="status-badge">SEHAT 💖</span>
 
             <label>Suhu Tubuh</label>
-            <div class="sensor-container">
+            <div id="box-temp" class="sensor-container">
                 <span id="val-temp" class="sensor-value">36.5 °C</span>
                 <span>🌡️</span>
             </div>
@@ -63,10 +63,10 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="border-right: 1px solid var(--pink-light);">Waktu</th>
-                        <th style="border-right: 1px solid var(--pink-light);">Nama</th>
-                        <th style="border-right: 1px solid var(--pink-light);">HR</th>
-                        <th style="border-right: 1px solid var(--pink-light);">Suhu</th>
+                        <th style="border-right: 1px solid var(--pink-light); width: 20%;">Waktu</th>
+                        <th style="border-right: 1px solid var(--pink-light); width: 25%;">Nama</th>
+                        <th style="border-right: 1px solid var(--pink-light); width: 18%;">HR</th>
+                        <th style="border-right: 1px solid var(--pink-light); width: 18%;">Suhu</th>
                         <th>Keterangan</th>
                     </tr>
                 </thead>
@@ -88,53 +88,91 @@
     </div>
 
     <script>
-        // Nilai default awal agar TIDAK MUNGKIN muncul tanda strip (-- ) lagi
-        let currentHR = 72;
-        let currentTemp = 36.4;
+        let currentHR = 75;
+        let currentTemp = 36.5;
         let savedData = [];
         let initialClear = true;
 
-        // Fungsi mengubah angka secara acak (simulasi)
-        function perbaruiAngkaSensor() {
-            // Membuat angka acak baru
-            currentHR = Math.floor(Math.random() * (95 - 65 + 1)) + 65;
-            currentTemp = parseFloat((Math.random() * (37.2 - 36.1) + 36.1).toFixed(1));
+        // Fungsi pembantu untuk mendeteksi status berdasarkan angka sensor
+        function hitungStatus(hr, temp) {
+            // 1. Kritis
+            if (hr > 115 || hr < 50 || temp > 38.0 || temp < 35.0) {
+                return { text: "KRITIS 🚨", color: "#ef4444", bgColor: "#fee2e2" };
+            }
+            // 2. Kurang Sehat
+            if ((hr > 95 && hr <= 115) || (hr >= 50 && hr < 60) || (temp > 37.2 && temp <= 38.0) || (temp >= 35.0 && temp < 36.1)) {
+                return { text: "KRG SEHAT ⚠️", color: "#f59e0b", bgColor: "#fef3c7" };
+            }
+            // 3. Sehat / Normal
+            return { text: "SEHAT 💖", color: "#10b981", bgColor: "#fff1f2" };
+        }
 
-            // Langsung pasang ke layar
+        // Fungsi mengubah angka secara acak (Simulasi bervariasi)
+        function perbaruiAngkaSensor() {
+            const acak = Math.random();
+            
+            if (acak > 0.70) { 
+                // 30% peluang memunculkan kondisi Kurang Sehat
+                currentHR = Math.floor(Math.random() * (112 - 98 + 1)) + 98;
+                currentTemp = parseFloat((Math.random() * (37.9 - 37.3) + 37.3).toFixed(1));
+            } else if (acak > 0.55) {
+                // 15% peluang memunculkan kondisi Kritis
+                currentHR = Math.floor(Math.random() * (130 - 116 + 1)) + 116;
+                currentTemp = parseFloat((Math.random() * (39.5 - 38.1) + 38.1).toFixed(1));
+            } else {
+                // 55% peluang memunculkan kondisi Sehat / Normal
+                currentHR = Math.floor(Math.random() * (95 - 65 + 1)) + 65;
+                currentTemp = parseFloat((Math.random() * (37.1 - 36.2) + 36.2).toFixed(1));
+            }
+
+            // Pasang ke komponen teks
             document.getElementById('val-hr').innerText = currentHR + " bpm";
             document.getElementById('val-temp').innerText = currentTemp + " °C";
 
-            // Evaluasi status sehat / kritis
+            // Ubah badge status dan background kotak sensor secara dinamis
+            const analisis = hitungStatus(currentHR, currentTemp);
             const badge = document.getElementById('badge-hr');
-            if (currentHR > 100 || currentTemp > 37.5) {
-                badge.innerText = "KRITIS 🚨";
-                badge.style.backgroundColor = "#ef4444";
-            } else {
-                badge.innerText = "SEHAT 💖";
-                badge.style.backgroundColor = "#10b981";
-            }
+            
+            badge.innerText = analisis.text;
+            badge.style.backgroundColor = analisis.color;
+            
+            document.getElementById('box-hr').style.backgroundColor = analisis.bgColor;
+            document.getElementById('box-temp').style.backgroundColor = analisis.bgColor;
         }
 
-        // Tombol Simpan Data
+        // Tombol Simpan Data ke dalam tabel log
         document.getElementById('btn-save').addEventListener('click', function() {
             const namaInput = document.getElementById('input-nama').value.trim() || "Pasien Anonim";
-            const statusText = (currentHR > 100 || currentTemp > 37.5) ? "Kritis 🚨" : "Sehat 💖";
-            const warnaTeks = (currentHR > 100 || currentTemp > 37.5) ? "#ef4444" : "#10b981";
+            const analisis = hitungStatus(currentHR, currentTemp);
+
+            // Ambil waktu jam dan menit real-time asli dari komputer/HP user saat ini
+            const sekarang = new Date();
+            const jam = String(sekarang.getHours()).padStart(2, '0');
+            const menit = String(sekarang.getMinutes()).padStart(2, '0');
+            const waktuSekarang = jam + ":" + menit;
 
             if (initialClear) {
                 document.getElementById('table-body').innerHTML = '';
                 initialClear = false;
             }
 
-            savedData.push({ nama: namaInput, hr: currentHR, temp: currentTemp, status: statusText });
+            // Masukkan data ke array untuk file download
+            savedData.push({ 
+                waktu: waktuSekarang, 
+                nama: namaInput, 
+                hr: currentHR, 
+                temp: currentTemp, 
+                status: analisis.text 
+            });
 
+            // Tambahkan baris baru ke tabel fisik
             const baris = document.createElement('tr');
             baris.innerHTML = `
-                <td style="border-right: 1px solid #f3f4f6; color: #6b7280;">Baru</td>
+                <td style="border-right: 1px solid #f3f4f6; font-family: monospace; color: #6b7280;">${waktuSekarang}</td>
                 <td style="border-right: 1px solid #f3f4f6; font-weight: bold;">${namaInput}</td>
                 <td style="border-right: 1px solid #f3f4f6; font-family: monospace;">${currentHR} bpm</td>
                 <td style="border-right: 1px solid #f3f4f6; font-family: monospace;">${currentTemp} °C</td>
-                <td style="font-weight: bold; color: ${warnaTeks};">${statusText}</td>
+                <td style="font-weight: bold; color: ${analisis.color};">${analisis.text}</td>
             `;
             document.getElementById('table-body').appendChild(baris);
         });
@@ -142,23 +180,8 @@
         // Tombol Download CSV
         document.getElementById('btn-download').addEventListener('click', function() {
             if (savedData.length === 0) {
-                alert("Data kosong!");
+                alert("Data kosong! Silakan simpan data terlebih dahulu.");
                 return;
             }
-            let csv = "Nama Pasien,Heart Rate,Suhu Tubuh,Status\n";
+            let csv = "Waktu,Nama Pasien,Heart Rate,Suhu Tubuh,Status\n";
             savedData.forEach(function(d) {
-                csv += d.nama + "," + d.hr + " bpm," + d.temp + " C," + d.status + "\n";
-            });
-            const link = document.createElement("a");
-            link.setAttribute("href", encodeURI("data:text/csv;charset=utf-8," + csv));
-            link.setAttribute("download", "Laporan_Kesehatan.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-
-        // Jalankan perubahan angka secara otomatis setiap 2 detik
-        setInterval(perbaruiAngkaSensor, 2000);
-    </script>
-</body>
-</html>
