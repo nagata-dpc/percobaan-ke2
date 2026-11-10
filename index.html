@@ -3,188 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Health Dashboard - Premium Pink Edition</title>
+    <title>Smart Health Dashboard</title>
     <style>
         :root {
             --pink-primary: #ec4899;
             --pink-light: #fbcfe8;
             --pink-bg: #fdf2f8;
             --pink-dark: #be185d;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --danger-color: #ef4444;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--pink-bg);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            width: 100%;
-            max-width: 600px;
-            border-radius: 24px;
-            box-shadow: 0 15px 35px rgba(236, 72, 153, 0.15);
-            border: 2px solid var(--pink-light);
-            padding: 35px;
-        }
-
-        .header-title {
-            text-align: center;
-            color: var(--pink-dark);
-            margin-bottom: 20px;
-            font-size: 22px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-        }
-
-        .url-box {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid var(--pink-light);
-            border-radius: 12px;
-            background-color: #fffafc;
-            color: var(--pink-dark);
-            font-family: monospace;
-            font-size: 14px;
-            margin-bottom: 25px;
-            outline: none;
-        }
-
-        .grid-form {
-            display: grid;
-            grid-template-columns: 90px 1fr auto;
-            gap: 18px 12px;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        label {
-            font-weight: 700;
-            color: var(--pink-dark);
-            font-size: 14px;
-        }
-
-        input[type="text"] {
-            padding: 11px 14px;
-            border: 2px solid var(--pink-light);
-            border-radius: 12px;
-            outline: none;
-            font-size: 14px;
-        }
-
-        .sensor-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 15px;
-            background-color: #fff1f2;
-            border: 2px solid var(--pink-light);
-            border-radius: 12px;
-        }
-
-        .sensor-value {
-            font-weight: 800;
-            font-family: monospace;
-            color: var(--pink-dark);
-            font-size: 16px;
-        }
-
-        .status-badge {
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: white;
-            background-color: #9ca3af;
-            text-align: center;
-            display: inline-block;
-            min-width: 100px;
-        }
-
-        .bg-normal { background-color: #fff1f2; border-color: var(--pink-light); }
-        .bg-warning { background-color: #fef3c7; border-color: #fde68a; }
-        .bg-danger { background-color: #fee2e2; border-color: #fca5a5; }
-
-        .badge-normal { background-color: var(--success-color); }
-        .badge-warning { background-color: var(--warning-color); }
-        .badge-danger { background-color: var(--danger-color); }
-
-        .btn {
-            background-color: var(--pink-primary);
-            color: white;
-            border: none;
-            padding: 11px 20px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(236, 72, 153, 0.2);
-        }
-
-        .btn:hover {
-            background-color: var(--pink-dark);
-        }
-
-        .btn-bluetooth {
-            background-color: #6366f1;
-        }
-
-        .table-wrapper {
-            border-radius: 16px;
-            overflow: hidden;
-            border: 2px solid var(--pink-light);
-            margin-bottom: 25px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: center;
-            font-size: 13px;
-        }
-
-        th {
-            background-color: #fce7f3;
-            color: var(--pink-dark);
-            padding: 14px 10px;
-            font-weight: 700;
-            border-bottom: 2px solid var(--pink-light);
-        }
-
-        td {
-            padding: 12px 10px;
-            background-color: white;
-            color: #4b5563;
-            border-bottom: 1px solid #f3f4f6;
-        }
-
-        .table-status {
-            font-weight: 700;
-            font-size: 12px;
-        }
-
-        .text-success { color: var(--success-color); }
-        .text-warning { color: var(--warning-color); }
-        .text-danger { color: var(--danger-color); }
-
-        .actions-footer {
-            display: flex;
-            justify-content: flex-end;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background-color: var(--pink-bg); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .container { background: white; width: 100%; max-width: 550px; border-radius: 20px; border: 2px solid var(--pink-light); padding: 30px; box-shadow: 0 10px 25px rgba(236, 72, 153, 0.15); }
+        .header-title { text-align: center; color: var(--pink-dark); margin-bottom: 20px; font-size: 22px; font-weight: bold; }
+        .url-box { width: 100%; padding: 12px; border: 2px solid var(--pink-light); border-radius: 12px; margin-bottom: 25px; outline: none; font-family: monospace; }
+        .grid-form { display: grid; grid-template-columns: 90px 1fr auto; gap: 15px; align-items: center; margin-bottom: 25px; }
+        label { font-weight: bold; color: var(--pink-dark); font-size: 14px; }
+        input[type="text"] { padding: 10px; border: 2px solid var(--pink-light); border-radius: 10px; outline: none; }
+        .sensor-container { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background-color: #fff1f2; border: 2px solid var(--pink-light); border-radius: 12px; }
+        .sensor-value { font-weight: bold; font-family: monospace; color: var(--pink-dark); font-size: 16px; }
+        .status-badge { padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; color: white; background-color: #10b981; text-align: center; }
+        .btn { background-color: var(--pink-primary); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .btn:hover { background-color: var(--pink-dark); }
+        .btn-bluetooth { background-color: #6366f1; }
+        .table-wrapper { border-radius: 12px; overflow: hidden; border: 2px solid var(--pink-light); margin-bottom: 25px; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-size: 13px; }
+        th { background-color: #fce7f3; color: var(--pink-dark); padding: 12px; font-weight: bold; border-bottom: 2px solid var(--pink-light); }
+        td { padding: 12px; background-color: white; color: #4b5563; border-bottom: 1px solid #f3f4f6; }
+        .actions-footer { display: flex; justify-content: flex-end; }
     </style>
 </head>
 <body>
@@ -200,15 +45,15 @@
             <button id="btn-bluetooth" class="btn btn-bluetooth">Connect Bluetooth</button>
 
             <label>Heart Rate</label>
-            <div id="container-hr" class="sensor-container">
-                <span id="val-hr" class="sensor-value">-- bpm</span>
-                <span class="heart-icon" style="color: var(--pink-primary); font-size: 18px;">♥</span>
+            <div class="sensor-container">
+                <span id="val-hr" class="sensor-value">75 bpm</span>
+                <span style="color: var(--pink-primary);">♥</span>
             </div>
-            <span id="badge-hr" class="status-badge">No Data</span>
+            <span id="badge-hr" class="status-badge">SEHAT 💖</span>
 
             <label>Suhu Tubuh</label>
-            <div id="container-temp" class="sensor-container">
-                <span id="val-temp" class="sensor-value">-- °C</span>
+            <div class="sensor-container">
+                <span id="val-temp" class="sensor-value">36.5 °C</span>
                 <span>🌡️</span>
             </div>
             <button id="btn-save" class="btn">Save Data</button>
@@ -218,15 +63,15 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="border-right: 1px solid var(--pink-light); width: 20%;">Waktu</th>
-                        <th style="border-right: 1px solid var(--pink-light); width: 25%;">Nama</th>
-                        <th style="border-right: 1px solid var(--pink-light); width: 18%;">HR</th>
-                        <th style="border-right: 1px solid var(--pink-light); width: 18%;">Suhu</th>
-                        <th style="width: 21%;">Keterangan</th>
+                        <th style="border-right: 1px solid var(--pink-light);">Waktu</th>
+                        <th style="border-right: 1px solid var(--pink-light);">Nama</th>
+                        <th style="border-right: 1px solid var(--pink-light);">HR</th>
+                        <th style="border-right: 1px solid var(--pink-light);">Suhu</th>
+                        <th>Keterangan</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
-                    <tr class="placeholder-text">
+                    <tr style="color: #d1d5db; font-weight: bold;">
                         <td style="border-right: 1px solid #f3f4f6;">. . . .</td>
                         <td style="border-right: 1px solid #f3f4f6;">. . . .</td>
                         <td style="border-right: 1px solid #f3f4f6;">. . . .</td>
@@ -243,59 +88,77 @@
     </div>
 
     <script>
-        const btnSave = document.getElementById('btn-save');
-        const btnDownload = document.getElementById('btn-download');
-        const tableBody = document.getElementById('table-body');
-        
+        // Nilai default awal agar TIDAK MUNGKIN muncul tanda strip (-- ) lagi
+        let currentHR = 72;
+        let currentTemp = 36.4;
         let savedData = [];
-        let initialClear = true; 
-        
-        let currentHR = 75;
-        let currentTemp = 36.5;
+        let initialClear = true;
 
-        function jalankanSimulasi() {
-            // Logika acak sederhana, pasti jalan tanpa library luar
-            const acak = Math.random();
-            if (acak > 0.8) { 
-                currentHR = Math.floor(Math.random() * (125 - 110 + 1)) + 110;
-                currentTemp = parseFloat((Math.random() * (39.2 - 38.0) + 38.0).toFixed(1));
-            } else {
-                currentHR = Math.floor(Math.random() * (95 - 65 + 1)) + 65;
-                currentTemp = parseFloat((Math.random() * (37.0 - 36.2) + 36.2).toFixed(1));
-            }
-            
-            // Masukkan teks ke kotak UI web
+        // Fungsi mengubah angka secara acak (simulasi)
+        function perbaruiAngkaSensor() {
+            // Membuat angka acak baru
+            currentHR = Math.floor(Math.random() * (95 - 65 + 1)) + 65;
+            currentTemp = parseFloat((Math.random() * (37.2 - 36.1) + 36.1).toFixed(1));
+
+            // Langsung pasang ke layar
             document.getElementById('val-hr').innerText = currentHR + " bpm";
             document.getElementById('val-temp').innerText = currentTemp + " °C";
-            
-            // Hitung Keterangan Sehat / Kritis
-            let txt = "Sehat 💖";
-            let cls = "normal";
-            let tCls = "text-success";
-            
-            if (currentHR > 100 || currentTemp > 37.5) {
-                txt = "Kritis 🚨";
-                cls = "danger";
-                tCls = "text-danger";
-            }
-            
-            // Ganti warna latar dan teks lencana status
-            const badgeHr = document.getElementById('badge-hr');
-            badgeHr.innerText = txt;
-            badgeHr.className = "status-badge badge-" + cls;
 
-            document.getElementById('container-hr').className = "sensor-container bg-" + cls;
-            document.getElementById('container-temp').className = "sensor-container bg-" + cls;
+            // Evaluasi status sehat / kritis
+            const badge = document.getElementById('badge-hr');
+            if (currentHR > 100 || currentTemp > 37.5) {
+                badge.innerText = "KRITIS 🚨";
+                badge.style.backgroundColor = "#ef4444";
+            } else {
+                badge.innerText = "SEHAT 💖";
+                badge.style.backgroundColor = "#10b981";
+            }
         }
 
-        btnSave.addEventListener('click', function() {
-            const nama = document.getElementById('input-nama').value.trim() || "Pasien Anonim";
-            
-            let txt = "Sehat 💖";
-            let tCls = "text-success";
-            if (currentHR > 100 || currentTemp > 37.5) {
-                txt = "Kritis 🚨";
-                tCls = "text-danger";
-            }
+        // Tombol Simpan Data
+        document.getElementById('btn-save').addEventListener('click', function() {
+            const namaInput = document.getElementById('input-nama').value.trim() || "Pasien Anonim";
+            const statusText = (currentHR > 100 || currentTemp > 37.5) ? "Kritis 🚨" : "Sehat 💖";
+            const warnaTeks = (currentHR > 100 || currentTemp > 37.5) ? "#ef4444" : "#10b981";
 
             if (initialClear) {
+                document.getElementById('table-body').innerHTML = '';
+                initialClear = false;
+            }
+
+            savedData.push({ nama: namaInput, hr: currentHR, temp: currentTemp, status: statusText });
+
+            const baris = document.createElement('tr');
+            baris.innerHTML = `
+                <td style="border-right: 1px solid #f3f4f6; color: #6b7280;">Baru</td>
+                <td style="border-right: 1px solid #f3f4f6; font-weight: bold;">${namaInput}</td>
+                <td style="border-right: 1px solid #f3f4f6; font-family: monospace;">${currentHR} bpm</td>
+                <td style="border-right: 1px solid #f3f4f6; font-family: monospace;">${currentTemp} °C</td>
+                <td style="font-weight: bold; color: ${warnaTeks};">${statusText}</td>
+            `;
+            document.getElementById('table-body').appendChild(baris);
+        });
+
+        // Tombol Download CSV
+        document.getElementById('btn-download').addEventListener('click', function() {
+            if (savedData.length === 0) {
+                alert("Data kosong!");
+                return;
+            }
+            let csv = "Nama Pasien,Heart Rate,Suhu Tubuh,Status\n";
+            savedData.forEach(function(d) {
+                csv += d.nama + "," + d.hr + " bpm," + d.temp + " C," + d.status + "\n";
+            });
+            const link = document.createElement("a");
+            link.setAttribute("href", encodeURI("data:text/csv;charset=utf-8," + csv));
+            link.setAttribute("download", "Laporan_Kesehatan.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Jalankan perubahan angka secara otomatis setiap 2 detik
+        setInterval(perbaruiAngkaSensor, 2000);
+    </script>
+</body>
+</html>
